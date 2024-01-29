@@ -1,0 +1,23 @@
+button {
+  border: none;
+  background-color: transparent;
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+input {
+  padding-left: 20px;
+  position: absolute;
+}
+input:focus {
+  border: none;
+}
+.box {
+  background-color: #ab73ef;
+  padding: 10px;
+}
+.searchForm {
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+}
