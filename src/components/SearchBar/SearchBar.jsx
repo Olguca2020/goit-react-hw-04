@@ -1,9 +1,16 @@
 import css from "./SearchBar.module.css";
 import { IoIosSearch } from "react-icons/io";
-export const SearchBar = () => {
+export const SearchBar = ({ onSearch }) => {
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    const form = evt.target;
+    onSearch(form.elements.topic.value);
+    console.log(form.elements.topic.value);
+    form.reset();
+  };
   return (
     <header className={css.box}>
-      <form className={css.searchForm}>
+      <form onSubmit={handleSubmit} className={css.searchForm}>
         <input
           type="text"
           autoComplete="off"
