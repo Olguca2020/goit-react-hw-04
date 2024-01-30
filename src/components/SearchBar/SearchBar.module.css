@@ -8,9 +8,11 @@ button {
 input {
   padding-left: 20px;
   position: absolute;
+  outline: none;
+  border: none;
 }
 input:focus {
-  border: none;
+  outline: none;
 }
 .box {
   background-color: #ab73ef;
