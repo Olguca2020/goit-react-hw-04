@@ -1,44 +1,69 @@
 import { useEffect, useState } from "react";
 import { fetchPhotosWithTopic } from "./gallery-api";
 import { Audio } from "react-loader-spinner";
+import { Toaster } from "react-hot-toast";
 
 import "./App.css";
 import { SearchBar } from "./components/SearchBar/SearchBar";
 import { ImageGallery } from "./components/ImageGallery/ImageGallery";
 import { LoadMoreBtn } from "./components/LoadMoreBtn/LoadMoreBtn";
+import { ImageModal } from "./components/ImageModal/ImageModal";
 
 function App() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-    },
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const openModal = (photo) => {
+    setSelectedPhoto(photo);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const searchImg = async (newQuery) => {
+    setQuery(`${Date.now()}/${newQuery}`);
+    setPage(1);
+    setPhotos([]);
+  };
+  const handleLoadMore = () => {
+    setPage(page + 1);
   };
   useEffect(() => {
-    async function fetchPhotos() {
+    //паттерн пропуску ефекту монтування при виклику ефекта
+    if (query === "") {
+      return;
+    }
+    async function fetchData() {
       try {
         setLoading(true);
         setError(false);
-        const data = await fetchPhotosWithTopic();
-        setPhotos(data);
+        const data = await fetchPhotosWithTopic(query.split("/")[1], page);
+        setPhotos((prevData) => [...prevData, ...data]);
       } catch (error) {
         setError(true);
       } finally {
         setLoading(false);
       }
     }
-    fetchPhotos();
-  }, []);
+    fetchData();
+  }, [query, page]);
+
   return (
     <>
-      <SearchBar />
+      <SearchBar onSearch={searchImg} />
+
+      {error && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+      {photos.length > 0 && !loading && (
+        <ImageGallery photos={photos} openModal={openModal} />
+      )}
       {loading && (
         <Audio
           height="80"
@@ -50,11 +75,13 @@ function App() {
           wrapperClass
         />
       )}
-      {error && (
-        <p>Whoops, something went wrong! Please try reloading this page!</p>
-      )}
-      {photos.length > 0 && <ImageGallery photos={photos} />}
-      <LoadMoreBtn />
+      <LoadMoreBtn handleLoadMore={handleLoadMore} />
+      <ImageModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        photo={selectedPhoto}
+      />
+      <Toaster position="top-right" />
     </>
   );
 }
