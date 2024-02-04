@@ -1,4 +1,5 @@
 import Modal from "react-modal";
+import css from "./ImageModal.module.css";
 
 const customStyles = {
   content: {
@@ -23,7 +24,6 @@ export const ImageModal = ({ isOpen, onRequestClose, photo }) => {
       <img
         src={photo.cover_photo.urls.full}
         alt={photo.cover_photo.alt_description}
-        // width="350px"
       />
       <p>Author: {photo.user.name.toUpperCase()}</p>
       <p>Likes: {photo.user.total_likes}</p>
