@@ -18,6 +18,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [isLoadMoreVisible, setLoadMoreVisible] = useState(false);
 
   const openModal = (photo) => {
     setSelectedPhoto(photo);
@@ -49,6 +50,7 @@ function App() {
           setHasMore(false);
         } else {
           setPhotos((prevData) => [...prevData, ...data]);
+          setLoadMoreVisible(data.length > 0);
         }
       } catch (error) {
         setError(true);
@@ -80,7 +82,9 @@ function App() {
           wrapperClass
         />
       )}
-      {hasMore && <LoadMoreBtn handleLoadMore={handleLoadMore} />}
+      {isLoadMoreVisible && hasMore && (
+        <LoadMoreBtn handleLoadMore={handleLoadMore} />
+      )}
       <ImageModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
