@@ -4,3 +4,10 @@
   display: block;
   object-fit: cover;
 }
+.imgWrapper {
+  width: 100%;
+}
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+}

@@ -7,8 +7,10 @@ export const ImageCard = ({ smallPhoto, descr, photoName, likes, onClick }) => {
   };
 
   return (
-    <div onClick={handleClick}>
-      <img className={css.cardImg} src={smallPhoto} alt={descr} />
+    <div className="css.cardWrapper" onClick={handleClick}>
+      <div className={css.imgWrapper}>
+        <img className={css.cardImg} src={smallPhoto} alt={descr} />
+      </div>
       <p>Author: {photoName.toUpperCase()}</p>
       <p>Likes: {likes}</p>
     </div>

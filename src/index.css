@@ -47,3 +47,7 @@ ul {
     color: #747bff;
   }
 }
+img {
+  display: block;
+  max-width: 100%;
+}
