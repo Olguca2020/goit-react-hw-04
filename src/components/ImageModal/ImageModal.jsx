@@ -1,8 +1,11 @@
 import Modal from "react-modal";
-import css from "./ImageModal.module.css";
+import css from "./ImageModal.css";
 
 const customStyles = {
   content: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -22,6 +25,7 @@ export const ImageModal = ({ isOpen, onRequestClose, photo }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
       <img
+        className={css.imgModal}
         src={photo.cover_photo.urls.full}
         alt={photo.cover_photo.alt_description}
       />
