@@ -18,5 +18,5 @@ export const fetchPhotosWithTopic = async (query, page) => {
   //   });
 
   console.log(response.data.results);
-  return response.data.results;
+  return response.data;
 };

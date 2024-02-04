@@ -17,8 +17,8 @@ function App() {
   const [page, setPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
   const [isLoadMoreVisible, setLoadMoreVisible] = useState(false);
+  // const [totalPages, settotalPages] = useState(0);
 
   const openModal = (photo) => {
     setSelectedPhoto(photo);
@@ -46,11 +46,13 @@ function App() {
         setLoading(true);
         setError(false);
         const data = await fetchPhotosWithTopic(query.split("/")[1], page);
-        if (data.length === 0) {
-          setHasMore(false);
+        console.dir(data);
+        setPhotos((prevData) => [...prevData, ...data.results]);
+        const totalPages = data.total_pages;
+        if (page === totalPages) {
+          setLoadMoreVisible(false);
         } else {
-          setPhotos((prevData) => [...prevData, ...data]);
-          setLoadMoreVisible(data.length > 0);
+          setLoadMoreVisible(true);
         }
       } catch (error) {
         setError(true);
@@ -82,9 +84,7 @@ function App() {
           wrapperClass
         />
       )}
-      {isLoadMoreVisible && hasMore && (
-        <LoadMoreBtn handleLoadMore={handleLoadMore} />
-      )}
+      {isLoadMoreVisible && <LoadMoreBtn handleLoadMore={handleLoadMore} />}
       <ImageModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
